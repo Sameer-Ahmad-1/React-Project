@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import JobListing from './JobListing';
 import Spinner from './Spinner';
+import { getJobs } from '../utils/jobs';
 
 const JobListings = ({ isHome = false }) => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      const apiUrl = isHome ? '/api/jobs?_limit=3' : '/api/jobs';
+    const fetchJobs = () => {
       try {
-        const res = await fetch(apiUrl);
-        const data = await res.json();
+        const allJobs = getJobs();
+        const data = isHome ? allJobs.slice(0, 3) : allJobs;
         setJobs(data);
       } catch (error) {
         console.log('Error fetching data', error);
@@ -21,7 +21,7 @@ const JobListings = ({ isHome = false }) => {
     };
 
     fetchJobs();
-  }, []);
+  }, [isHome]);
 
   return (
     <section className='bg-blue-50 px-4 py-10'>

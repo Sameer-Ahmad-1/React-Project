@@ -11,38 +11,22 @@ import NotFoundPage from './pages/NotFoundPage';
 import JobPage, { jobLoader } from './pages/JobPage';
 import AddJobPage from './pages/AddJobPage';
 import EditJobPage from './pages/EditJobPage';
+import { addJob, deleteJob, updateJob } from './utils/jobs';
 
 const App = () => {
   // Add New Job
-  const addJob = async (newJob) => {
-    const res = await fetch('/api/jobs', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newJob),
-    });
-    return;
+  const addJobHandler = async (newJob) => {
+    addJob(newJob);
   };
 
   // Delete Job
-  const deleteJob = async (id) => {
-    const res = await fetch(`/api/jobs/${id}`, {
-      method: 'DELETE',
-    });
-    return;
+  const deleteJobHandler = async (id) => {
+    deleteJob(id);
   };
 
   // Update Job
-  const updateJob = async (job) => {
-    const res = await fetch(`/api/jobs/${job.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(job),
-    });
-    return;
+  const updateJobHandler = async (job) => {
+    updateJob(job);
   };
 
   const router = createBrowserRouter(
@@ -50,15 +34,15 @@ const App = () => {
       <Route path='/' element={<MainLayout />}>
         <Route index element={<HomePage />} />
         <Route path='/jobs' element={<JobsPage />} />
-        <Route path='/add-job' element={<AddJobPage addJobSubmit={addJob} />} />
+        <Route path='/add-job' element={<AddJobPage addJobSubmit={addJobHandler} />} />
         <Route
           path='/edit-job/:id'
-          element={<EditJobPage updateJobSubmit={updateJob} />}
+          element={<EditJobPage updateJobSubmit={updateJobHandler} />}
           loader={jobLoader}
         />
         <Route
           path='/jobs/:id'
-          element={<JobPage deleteJob={deleteJob} />}
+          element={<JobPage deleteJob={deleteJobHandler} />}
           loader={jobLoader}
         />
         <Route path='*' element={<NotFoundPage />} />

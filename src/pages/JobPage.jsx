@@ -2,6 +2,7 @@ import { useParams, useLoaderData, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaMapMarker } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { getJobById } from '../utils/jobs';
 
 const JobPage = ({ deleteJob }) => {
   const navigate = useNavigate();
@@ -112,9 +113,7 @@ const JobPage = ({ deleteJob }) => {
 };
 
 const jobLoader = async ({ params }) => {
-  const res = await fetch(`/api/jobs/${params.id}`);
-  const data = await res.json();
-  return data;
+  return getJobById(params.id);
 };
 
 export { JobPage as default, jobLoader };
